@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/coba', function() {
+    $date = date('d-m-Y');
+    $luckyNumber = random_int(1, 100);
+    return "Halo nama saya joni<br>Kamu mengakses website ini pada ".$date."<br>Your lucky number is ".$luckyNumber;
+});
