@@ -21,12 +21,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// These are the public routes
+
 Route::get('/me', [AuthController::class, 'me']);
+Route::get('/books', [BookController::class, 'index']);
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::get('/authors', [AuthorController::class, 'index']);
+Route::get('/authors/{id}', [AuthorController::class, 'show']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::resource('/books', BookController::class)->except(
-    ['create', 'edit']
-);
+// These are the protected routes
 
-Route::resource('/authors', AuthorController::class)->except(
-    ['create', 'edit']
-);
+Route::middleware('auth:sanctum')->group(function() {
+    Route::resource('/books', BookController::class)->except(
+        ['create', 'edit', 'index', 'show']
+    );
+
+    Route::resource('/authors', AuthorController::class)->except(
+        ['create', 'edit', 'index', 'show']
+    );
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
